@@ -1,73 +1,82 @@
-# React + TypeScript + Vite
+# GamePlay Planner 🛡️⚔️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Banner](public/screenshots/banner.png)
 
-Currently, two official plugins are available:
+**GamePlay Planner** is a real-time, collaborative tactical whiteboard designed specifically for Discord Activities. It enables gaming communities to plan raids, strategies, and map movements seamlessly within Discord voice channels.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+*   **Real-Time Collaboration**: Built with `Yjs` and `WebSockets`, changes are synced instantly across all users.
+*   **Dynamic Sessions**:
+    *   **Landing Screen**: Create or Join sessions instantly.
+    *   **Session Codes**: Shareable 6-character codes (e.g., `X7K9P`) for private rooms.
+    *   **Multiple Rooms**: Support for multiple concurrent strategy sessions.
+*   **Tactical Whiteboard**:
+    *   Powered by `tldraw`.
+    *   **Custom RPG Toolkit**: Drag-and-drop icons (Tank, Healer, DPS, Flags, Boss Skulls).
+    *   **Map Upload**: Drop your dungeon maps directly onto the board.
+*   **Host & Role Management**:
+    *   **Panic Button (Lock)**: The Host can lock the board to prevent chaos.
+    *   **Hand Raise System**: Viewers can request permission to draw when the session is locked.
+    *   **Host Transfer**: Pass leadership to another player.
+*   **Discord Integration**: Native look and feel with dark mode interactions.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📸 Gallery
 
-## Expanding the ESLint configuration
+### Landing Screen
+*Create a new room or join your team.*
+![Landing](public/screenshots/landing.png)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Host View (Unlocked)
+*Full control over the board and participants.*
+![Host View](public/screenshots/host_view.png)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Viewer Perspective (Locked)
+*Clear feedback when the session is paused by the host.*
+![Viewer Locked](public/screenshots/viewer_locked.png)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🛠️ Installation & Development
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Prerequisites
+*   Node.js (v18+)
+*   Discord Account (Developer Mode enabled)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Local Development
+1.  **Clone the repo**:
+    ```bash
+    git clone https://github.com/your-username/discord-gameplay-planner.git
+    cd discord-gameplay-planner
+    ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+3.  **Start the Signaling Server (Y-Websocket)**:
+    Required for multiplayer functioning locally.
+    ```bash
+    npx y-websocket
+    ```
+
+4.  **Start the App**:
+    ```bash
+    npm run dev
+    ```
+
+5.  **Open in Browser**:
+    Visit `http://localhost:5173`. Open multiple tabs to test sync!
+
+### Discord Integration (Tunneling)
+To test inside Discord:
+1.  Start a Cloudflare Tunnel: `cloudflared tunnel --url http://localhost:5173`
+2.  Paste the URL into the **Discord Developer Portal > Activities > URL Mappings**.
+3.  Launch the activity in a Voice Channel.
+
+## 📚 Documentation
+For detailed guides, please refer to:
+*   [**Manual de Integración en Discord**](public/manuals/manual_integracion_discord.md) - How to register and publish the app.
+*   [**Manual de Testing**](public/manuals/manual_testing.md) - Testing strategies (Local vs Integrated).
+
+## 📄 License
+MIT License.
