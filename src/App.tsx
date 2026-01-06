@@ -27,10 +27,20 @@ function App() {
   }, [auth]);
 
   // 1. Initialize Discord SDK
+  // 1. Initialize Discord SDK
   useEffect(() => {
     async function setup() {
       try {
-        await discordSdk.ready();
+        // Log attempt
+        console.log("Attempting Discord SDK connection...");
+        
+        // Race condition: If SDK doesn't ready up in 2s, assume Web Mode
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error("Timeout")), 2000)
+        );
+
+        await Promise.race([discordSdk.ready(), timeoutPromise]);
+        
         setStatus("Discord SDK Ready");
 
         const { code } = await discordSdk.commands.authorize({
@@ -44,8 +54,9 @@ function App() {
         setStatus("Connected as " + MOCK_USER_ID);
 
       } catch (e) {
-        console.error(e);
-        setStatus("Error initializing SDK (Dev Mode)");
+        console.warn("Discord SDK Init Failed/Timed Out (Web Mode Active)", e);
+        setStatus("Web Mode: " + MOCK_USER_ID);
+        // We stay with MOCK_USER_ID and proceed
       }
     }
     setup();

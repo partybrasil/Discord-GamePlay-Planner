@@ -9,10 +9,10 @@ Esta versión permite a usuarios fuera de Discord unirse a las sesiones de estra
 ### 1. Preparar el Repositorio
 Asegúrate de que tu código está subido a un repositorio en GitHub (ej. `tu-usuario/Discord-GamePlay-Planner`).
 
-### 2. Configurar el Base Path
-El proyecto ya está configurado para detectar automáticamente si está en una subcarpeta (como suele ser el caso en GitHub Pages).
-*   Archivo clave: `vite.config.ts`
-*   Lógica: `base: process.env.VITE_BASE_PATH || '/'`
+### 2. Configurar el Base Path (Automático)
+El sistema ahora detecta **automáticamente** el nombre del repositorio.
+*   En `vite.config.ts`, la lógica `base` es dinámica.
+*   En `.github/workflows/deploy.yml`, el script inyecta el nombre del repositorio automáticamente. **No necesitas editar nada**.
 
 ### 3. Deploy Automático (GitHub Actions)
 La forma más fácil de desplegar es usar una GitHub Action. Crea un archivo `.github/workflows/deploy.yml` con este contenido:
@@ -49,9 +49,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
-        run: npm run build
-        env:
-          VITE_BASE_PATH: /Discord-GamePlay-Planner/ #CAMBIA ESTO POR/TU-REPO/
+        run: |
+          export VITE_BASE_PATH="/${{ github.event.repository.name }}/"
+          npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
