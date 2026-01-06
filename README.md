@@ -9,7 +9,8 @@
 *   **Real-Time Collaboration**: Built with `Yjs` and `WebSockets`, changes are synced instantly across all users.
 *   **Dynamic Sessions**:
     *   **Landing Screen**: Create or Join sessions instantly.
-    *   **Session Codes**: Shareable 6-character codes (e.g., `X7K9P`) for private rooms.
+    *   **Dual Mode**: Works inside Discord (Embedded) AND as a standalone Web App (GitHub Pages).
+    *   **Session Codes**: Shareable 6-character codes (e.g., `X7K9P`).
     *   **Multiple Rooms**: Support for multiple concurrent strategy sessions.
 *   **Tactical Whiteboard**:
     *   Powered by `tldraw`.

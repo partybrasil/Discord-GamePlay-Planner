@@ -8,7 +8,9 @@ export default defineConfig({
     host: true,
     port: 5173,
     hmr: {
-      clientPort: 443, // Optional: useful if tunnel is https
+       clientPort: 443,
     }
-  }
+  },
+  // Base path for GitHub Pages (injected by deploy.yml)
+  base: process.env.VITE_BASE_PATH || '/',
 })

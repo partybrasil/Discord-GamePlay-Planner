@@ -27,16 +27,25 @@ function App() {
   }, [auth]);
 
   // 1. Initialize Discord SDK
-  // 1. Initialize Discord SDK
+  // 1. Initialize Discord SDK (Conditional)
   useEffect(() => {
     async function setup() {
+      // Check if we are running likely in a browser (standalone) vs Discord
+      // Discord embedded apps usually have query params or specific environment
+      const isLikelyWeb = !window.location.search.includes('frame_id') && !window.location.search.includes('platform=discord');
+      
+      if (isLikelyWeb) {
+          console.log("🌍 Web Mode Detected: Skipping Discord SDK.");
+          setStatus("Web Mode: " + MOCK_USER_ID);
+          return; // Stop here, don't touch Discord SDK
+      }
+
       try {
-        // Log attempt
-        console.log("Attempting Discord SDK connection...");
+        console.log("🎮 Discord Mode Detected: Initializing SDK...");
         
-        // Race condition: If SDK doesn't ready up in 2s, assume Web Mode
+        // Fast timeout for Discord SDK
         const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error("Timeout")), 2000)
+          setTimeout(() => reject(new Error("Discord SDK Timeout")), 2000)
         );
 
         await Promise.race([discordSdk.ready(), timeoutPromise]);
@@ -54,9 +63,8 @@ function App() {
         setStatus("Connected as " + MOCK_USER_ID);
 
       } catch (e) {
-        console.warn("Discord SDK Init Failed/Timed Out (Web Mode Active)", e);
+        console.warn("Discord SDK Init Failed (Falling back to Web Mode)", e);
         setStatus("Web Mode: " + MOCK_USER_ID);
-        // We stay with MOCK_USER_ID and proceed
       }
     }
     setup();
