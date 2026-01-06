@@ -79,4 +79,4 @@ For detailed guides, please refer to:
 *   [**Manual de Testing**](public/manuals/manual_testing.md) - Testing strategies (Local vs Integrated).
 
 ## 📄 License
-MIT License.
+MIT License
