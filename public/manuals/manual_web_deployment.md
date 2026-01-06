@@ -67,18 +67,18 @@ jobs:
 2.  En **Source**, selecciona **GitHub Actions**.
 3.  Una vez corra el Action, tu web estará lista en `https://tu-usuario.github.io/Discord-GamePlay-Planner/`.
 
-## 🖥️ Experiencia de Usuario Web
+## 🖥️ Experiencia de Usuario Web (Modo Independiente)
 
-Al entrar en la versión web, la app detectará que no estás en Discord y te mostrará una pantalla de bienvenida especial.
+La aplicación es capaz de detectar inteligentemente dónde se está ejecutando.
 
-### Paso 1: Identificación
-Como no tenemos tu usuario de Discord, te pediremos un **"Commander Name"**.
-*(Screenshot de la pantalla de ingreso de nombre)*
+### Detección Automática
+*   **En Discord**: Carga el SDK, autentica al usuario y usa su nombre real.
+*   **En Web (GitHub Pages)**: **Omite** la carga del SDK de Discord por completo para una carga instantánea.
 
-### Paso 2: Unirse o Crear
-Una vez identificado, verás la pantalla estándar para crear una sala o unirte a una existente.
-*(Screenshot de la pantalla Landing)*
+### Flujo Web
+1.  **Identificación**: Al no haber login de Discord, se solicita un **"Commander Name"**.
+2.  **Sincronización**: A pesar de ser entornos diferentes, si dos usuarios (uno en Discord y otro en Web) introducen el mismo **Código de Sala**, ¡podrán colaborar en tiempo real!
 
-## ⚠️ Notas Importantes
-*   **Audio**: La versión web no tiene chat de voz integrado (eso es nativo de Discord). Usad Discord en segundo plano o cualquier otra app de voz.
-*   **Sincronización**: Las salas creadas en Web y en Discord son compatibles entre sí si usan el mismo servidor de WebSocket.
+## ⚠️ Solución de Problemas
+*   **Pantalla Blanca**: Si ves una pantalla blanca, el sistema `ErrorBoundary` te mostrará el error técnico.
+*   **Base Path**: Si la web carga pero no encuentra los archivos (404), verifica que el nombre de tu repositorio en GitHub coincida con la URL. El script de deploy se encarga de esto automáticamente, así que asegúrate de usar el Workflow incluido.

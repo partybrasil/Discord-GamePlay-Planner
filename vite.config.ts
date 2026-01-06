@@ -11,6 +11,6 @@ export default defineConfig({
        clientPort: 443,
     }
   },
-  // Base path for GitHub Pages (injected by deploy.yml)
-  base: process.env.VITE_BASE_PATH || '/',
+  // Relative base path ensures assets load correctly regardless of the repo name
+  base: './',
 })

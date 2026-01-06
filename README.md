@@ -36,6 +36,17 @@
 *Clear feedback when the session is paused by the host.*
 ![Viewer Locked](public/screenshots/viewer_locked.png)
 
+### 🌍 Web Version (GitHub Pages)
+*The independent web version runs in any browser.*
+
+**Commander Identification**
+*Since there is no Discord Auth, users identify themselves manually.*
+![Web Login](public/screenshots/landing.png)
+
+**Browser Experience**
+*Full features available in Chrome, Firefox, Safari, etc.*
+![Web Interface](public/screenshots/host_view.png)
+
 ## 🛠️ Installation & Development
 
 ### Prerequisites
