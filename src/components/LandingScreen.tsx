@@ -12,11 +12,17 @@ const generateSessionCode = () => {
 
 interface LandingScreenProps {
   onJoinSession: (roomId: string) => void;
+  onSetName: (name: string) => void;
+  currentName?: string;
 }
 
-export default function LandingScreen({ onJoinSession }: LandingScreenProps) {
+export default function LandingScreen({ onJoinSession, onSetName, currentName }: LandingScreenProps) {
   const [sessionCode, setSessionCode] = useState('');
   const [isJoinMode, setIsJoinMode] = useState(false);
+  
+  // Web Mode Name State
+  const [tempName, setTempName] = useState('');
+  const [isNameSet, setIsNameSet] = useState(!!currentName && currentName !== "Unknown User");
 
   const handleCreate = () => {
     const newCode = generateSessionCode();
@@ -24,9 +30,16 @@ export default function LandingScreen({ onJoinSession }: LandingScreenProps) {
   };
 
   const handleJoin = () => {
-    if (sessionCode.length >= 4) {
+    if (sessionCode.length >= 3) {
       onJoinSession(sessionCode.toUpperCase());
     }
+  };
+  
+  const handleSaveName = () => {
+     if (tempName.trim().length > 0) {
+        onSetName(tempName.trim());
+        setIsNameSet(true);
+     }
   };
 
   return (
@@ -40,58 +53,82 @@ export default function LandingScreen({ onJoinSession }: LandingScreenProps) {
             <p className="text-gray-400">Tactical Whiteboard for Gamers</p>
          </div>
 
-         {!isJoinMode ? (
-           <div className="flex flex-col gap-4">
-              <button 
-                onClick={handleCreate}
-                className="w-full py-4 text-xl font-bold bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all hover:scale-105 shadow-lg shadow-indigo-500/20"
-              >
-                Strategy Room (Create)
-              </button>
-              
-              <div className="relative my-2">
-                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-600"></div></div>
-                <div className="relative flex justify-center text-sm"><span className="px-2 bg-slate-800 text-slate-500">OR</span></div>
-              </div>
-
-              <button 
-                onClick={() => setIsJoinMode(true)}
-                className="w-full py-3 font-semibold bg-slate-700 hover:bg-slate-600 rounded-xl transition-colors"
-              >
-                Join Existing Session
-              </button>
-           </div>
-         ) : (
-           <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
-              <h2 className="text-lg font-bold">Enter Session Code</h2>
-              <input 
+         {!isNameSet ? (
+            <div className="flex flex-col gap-4 animate-in fade-in zoom-in duration-300">
+               <h2 className="text-lg font-bold text-indigo-300">Identify Yourself</h2>
+               <p className="text-xs text-gray-500 mb-2">Enter your display name to join the session.</p>
+               <input 
                 type="text"
-                value={sessionCode}
-                onChange={(e) => setSessionCode(e.target.value.toUpperCase())}
-                placeholder="Ex: X7K9P"
-                maxLength={8}
-                className="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-center text-2xl font-mono tracking-widest focus:outline-none focus:border-indigo-500 transition-colors uppercase"
-                onKeyDown={(e) => e.key === 'Enter' && handleJoin()}
+                value={tempName}
+                onChange={(e) => setTempName(e.target.value)}
+                placeholder="Commander Name"
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-center transition-colors focus:border-indigo-500 outline-none"
+                onKeyDown={(e) => e.key === 'Enter' && handleSaveName()}
                 autoFocus
               />
               <button 
-                onClick={handleJoin}
-                disabled={sessionCode.length < 3}
-                className="w-full py-3 font-bold bg-green-600 hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl transition-colors"
+                onClick={handleSaveName}
+                disabled={tempName.length < 2}
+                className="w-full py-3 font-bold bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 rounded-xl transition-colors"
               >
-                Join Room 🚀
+                Continue
               </button>
-              <button 
-                onClick={() => setIsJoinMode(false)}
-                className="text-sm text-gray-500 hover:text-gray-300 underline"
-              >
-                Back
-              </button>
-           </div>
+            </div>
+         ) : (
+             !isJoinMode ? (
+               <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right duration-300">
+                  <div className="text-sm text-gray-500 mb-2">Welcome, <span className="text-indigo-400 font-bold">{currentName || tempName}</span></div>
+                  <button 
+                    onClick={handleCreate}
+                    className="w-full py-4 text-xl font-bold bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all hover:scale-105 shadow-lg shadow-indigo-500/20"
+                  >
+                    Strategy Room (Create)
+                  </button>
+                  
+                  <div className="relative my-2">
+                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-600"></div></div>
+                    <div className="relative flex justify-center text-sm"><span className="px-2 bg-slate-800 text-slate-500">OR</span></div>
+                  </div>
+
+                  <button 
+                    onClick={() => setIsJoinMode(true)}
+                    className="w-full py-3 font-semibold bg-slate-700 hover:bg-slate-600 rounded-xl transition-colors"
+                  >
+                    Join Existing Session
+                  </button>
+               </div>
+             ) : (
+               <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                  <h2 className="text-lg font-bold">Enter Session Code</h2>
+                  <input 
+                    type="text"
+                    value={sessionCode}
+                    onChange={(e) => setSessionCode(e.target.value.toUpperCase())}
+                    placeholder="Ex: X7K9P"
+                    maxLength={8}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-center text-2xl font-mono tracking-widest focus:outline-none focus:border-indigo-500 transition-colors uppercase"
+                    onKeyDown={(e) => e.key === 'Enter' && handleJoin()}
+                    autoFocus
+                  />
+                  <button 
+                    onClick={handleJoin}
+                    disabled={sessionCode.length < 3}
+                    className="w-full py-3 font-bold bg-green-600 hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl transition-colors"
+                  >
+                    Join Room 🚀
+                  </button>
+                  <button 
+                    onClick={() => setIsJoinMode(false)}
+                    className="text-sm text-gray-500 hover:text-gray-300 underline"
+                  >
+                    Back
+                  </button>
+               </div>
+             )
          )}
 
          <div className="mt-8 text-xs text-gray-600">
-            v1.0.0 • Secure End-to-End Formatting
+            v1.1.0 (Web + Discord) • Secure End-to-End Formatting
          </div>
       </div>
     </div>

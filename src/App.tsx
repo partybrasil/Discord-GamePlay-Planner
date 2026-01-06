@@ -13,6 +13,8 @@ const MOCK_USER_ID = `user-${Math.floor(Math.random() * 10000)}`;
 function App() {
   const [auth, setAuth] = useState<{ code: string } | null>(null);
   const [userId] = useState<string>(MOCK_USER_ID);
+  // Web Mode: Allow user to set a display name if not in Discord
+  const [userName, setUserName] = useState<string>("Unknown User");
   const [status, setStatus] = useState<string>("Initializing...");
   
   // Phase 6: Session Management
@@ -93,7 +95,22 @@ function App() {
 
   // RENDER: Landing Screen if no Session ID
   if (!sessionId) {
-     return <LandingScreen onJoinSession={(code) => setSessionId(code)} />;
+     return (
+       <LandingScreen 
+         onJoinSession={(code) => setSessionId(code)} 
+         onSetName={(name) => {
+            // If user manually sets name (Web Mode), update it
+            // MOCK_USER_ID is still used for ID, but name is cosmetic
+            // In a better real world approach, we'd generate a stable ID for web users too.
+            // For now, we update the provider awareness later when provider connects.
+            // But we can store it in a state to pass it.
+            // Actually, we simply set it in the awareness useEffect if mock_user.
+            // We need a state for the user's display name.
+            setUserName(name);
+         }}
+         currentName={userName === 'Unknown User' ? undefined : userName}
+       />
+     );
   }
   
   // RENDER: Whiteboard (Wait for store)

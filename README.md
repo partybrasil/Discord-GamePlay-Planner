@@ -76,7 +76,8 @@ To test inside Discord:
 ## 📚 Documentation
 For detailed guides, please refer to:
 *   [**Manual de Integración en Discord**](public/manuals/manual_integracion_discord.md) - How to register and publish the app.
-*   [**Manual de Testing**](public/manuals/manual_testing.md) - Testing strategies (Local vs Integrated).
+*   [**Manual Testing**](public/manuals/manual_testing.md) - Testing strategies (Local vs Integrated).
+*   [**Manual Versión Web (GitHub Pages)**](public/manuals/manual_web_deployment.md) - How to deploy as a standalone website.
 
 ## 📄 License
 MIT License.
