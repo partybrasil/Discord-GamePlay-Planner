@@ -92,4 +92,4 @@ For detailed guides, please refer to:
 *   [**Manual Versión Web (GitHub Pages)**](public/manuals/manual_web_deployment.md) - How to deploy as a standalone website.
 
 ## 📄 License
-MIT License.
+MIT License
